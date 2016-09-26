@@ -79,10 +79,10 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 
 	var A, B string    // Entities
 	var Aval, Bval int // Asset holdings
-	var X int          // Transaction value
+	var X,Y int          // Transaction value
 	var err error
 
-	if len(args) != 3 {
+	if len(args) != 4 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 3")
 	}
 
@@ -114,8 +114,12 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 	if err != nil {
 		return nil, errors.New("Invalid transaction amount, expecting a integer value")
 	}
+	Y, err = strconv.Atoi(args[3])
+	if err != nil {
+		return nil, errors.New("Invalid transaction amount, expecting a integer value")
+	}
 	Aval = Aval - X
-	Bval = Bval + X
+	Bval = Bval + Y
 	fmt.Printf("Aval = %d, Bval = %d\n", Aval, Bval)
 
 	// Write the state back to the ledger
